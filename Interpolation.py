@@ -85,6 +85,37 @@ def Lagrange_basis(data, x, j):
     return foo
 
 
+def Newton(data, x):
+    foo = 0
+    for j, xy in enumerate(data):
+        foo += Newton_basis(data, x, j)*Divided_difference(
+            data[:j+1]
+        )
+    return foo
+
+
+def Divided_difference(data):
+    retvar = 0
+    for j, xy in enumerate(data):
+        xj = xy[0]
+        yj = xy[1]
+        foo = 1
+        for k, xy in enumerate(data):
+            if k == j:
+                continue
+            xk = xy[0]
+            foo *= (xj-xk)
+        retvar += yj/foo
+    return retvar
+
+
+def Newton_basis(data, x, j):
+    foo = 1
+    for i, xy in enumerate(data[:j]):
+        xi = xy[0]
+        foo *= x-xi
+    return foo
+
 """
     線性內插法函數
     演算法參考：https://en.wikipedia.org/wiki/Interpolation
@@ -104,10 +135,34 @@ def Linear(data, x):
             return pY+(Y-pY)*(x-pX)/(X-pX)
     return pY+(Y-pY)/(X-pX)*(x-pX)
 
+
+def Neivlle(data, x):
+    N = len(data)
+    return Neivlle_basis(data, 0, N-1, x)
+
+
+def Neivlle_basis(data, i, j, x):
+    if i == j:
+        return data[i, 1]
+    else:
+        retvar = (
+            (data[j, 0]-x)*Neivlle_basis(data, i, j-1, x)+(
+                x-data[i, 0])*Neivlle_basis(
+                data, i+1, j, x)
+        )/(
+            data[j, 0]-data[i, 0]
+        )
+        return retvar
+
 if __name__ == '__main__':
     data = numpy.loadtxt(sys.argv[1])
-    A = Interpolator(data, Linear, 10000, [float(sys.argv[3]),
-                                           float(sys.argv[4])])
+#    print Neivlle_basis(data, 0, 2, 10)
+#    print Neivlle(data, 10)
+#    print Newton(data, 15)
+#    print Lagrange(data, 15)
+#    print Linear(data, 15)
+    A = Interpolator(
+        data, Neivlle, 100, [float(sys.argv[3]), float(sys.argv[4])])
     print A.f(float(sys.argv[2]))
 #    data2 = numpy.loadtxt("test2.dat")
 #    B = Interpolator(data2, Lagrange, 1000000, [-100, 100])
