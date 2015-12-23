@@ -95,18 +95,13 @@ def Newton(data, x):
 
 
 def Divided_difference(data):
-    retvar = 0
-    for j, xy in enumerate(data):
-        xj = xy[0]
-        yj = xy[1]
-        foo = 1
-        for k, xy in enumerate(data):
-            if k == j:
-                continue
-            xk = xy[0]
-            foo *= (xj-xk)
-        retvar += yj/foo
-    return retvar
+    N = len(data)
+    if N == 1:
+        return data[0, 1]
+    else:
+        foo = Divided_difference(data[1:])-Divided_difference(data[:-1])
+        foo /= (data[-1, 0]-data[0, 0])
+        return foo
 
 
 def Newton_basis(data, x, j):
@@ -162,7 +157,7 @@ if __name__ == '__main__':
 #    print Lagrange(data, 15)
 #    print Linear(data, 15)
     A = Interpolator(
-        data, Neivlle, 100, [float(sys.argv[3]), float(sys.argv[4])])
+        data, Newton, 100, [float(sys.argv[3]), float(sys.argv[4])])
     print A.f(float(sys.argv[2]))
 #    data2 = numpy.loadtxt("test2.dat")
 #    B = Interpolator(data2, Lagrange, 1000000, [-100, 100])
