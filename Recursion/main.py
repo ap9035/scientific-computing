@@ -42,5 +42,5 @@ if __name__ == "__main__":
         print Fibonacci(i),
     print ""
     print "Factorial"
-    for i in range(1, 10):
+    for i in range(10):
         print Factorial(i)
