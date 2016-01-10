@@ -1,4 +1,5 @@
 import numpy as np
+import math
 
 
 def QR(M):
@@ -19,11 +20,37 @@ def QR(M):
     return Q, R
 
 
+def ChechElement(A, eps):
+    N = len(A)
+    for i in range(N):
+        for j in range(N):
+            if i == j:
+                continue
+            else:
+                if math.fabs(A[i, j]) >= eps:
+                    return True
+    return False
+
+
+def EigenValueAndVector(A):
+    eps = 1e-10
+    N = len(A)
+    V = np.eye(N)
+    while ChechElement(A, eps):
+        Q, R = QR(A)
+        A = R.dot(Q)
+        V = V.dot(Q)
+    return A, V
+
+
 def main():
-    M = np.array([[1., 1., 0.],
-                  [1., 0., 1.],
-                  [0., 1., 1.]])
-    QR(M)
+    M = np.array([[1., 2.],
+                  [2., 1.]])
+    D, V = EigenValueAndVector(M)
+    print "D"
+    print D
+    print "V"
+    print V
 
 
 if __name__ == "__main__":
