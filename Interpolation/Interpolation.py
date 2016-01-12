@@ -150,14 +150,13 @@ def Neivlle_basis(data, i, j, x):
 
 if __name__ == '__main__':
     data = numpy.loadtxt(sys.argv[1])
-#    print Neivlle_basis(data, 0, 2, 10)
-#    print Neivlle(data, 10)
+    print Lagrange(data, float(sys.argv[2]))
 #    print Newton(data, 15)
 #    print Lagrange(data, 15)
 #    print Linear(data, 15)
-    A = Interpolator(
-        data, Newton, 100, [float(sys.argv[3]), float(sys.argv[4])])
-    print A.f(float(sys.argv[2]))
+#    A = Interpolator(
+#        data, Newton, 100, [float(sys.argv[3]), float(sys.argv[4])])
+#    print A.f(float(sys.argv[2]))
 #    data2 = numpy.loadtxt("test2.dat")
 #    B = Interpolator(data2, Lagrange, 1000000, [-100, 100])
 #    print B.f(32)
