@@ -45,13 +45,12 @@ def Newton(func, x, eps=1e-10):
 
 
 def testfunc(x):
-    return np.sin(x)
+    return (x+1)*(x-1)*(x+10)
 
 
 def main():
-    x = np.linspace(1, 8, 10)
-    print Newton(testfunc, x)
-    print Newton(testfunc, 6.3)
+    print Newton(testfunc, np.linspace(-10, 15, 8))
+    print Newton(testfunc, 0.5)
 
 
 if __name__ == "__main__":
