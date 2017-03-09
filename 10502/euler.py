@@ -21,15 +21,15 @@ def forward_eluer(F, a, b, h, y0):
 
 
 def backword_eluer(F, a, b, h, y0):
-    N = int((b-a)/h)
+    N = int((a-b)/h)
     X = []
     Y = []
     x = a
     y = y0
     for i in range(N):
-        dy = F(x+h, y)
-        y = y + dy*h
-        x = x+h
+        dy = F(x, y)
+        y = y - dy*h
+        x = x-h
         X.append(x)
         Y.append(y)
     return X, Y
